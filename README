@@ -1,0 +1,18 @@
+DEBUG=1
+SECRET_KEY= ------------
+DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+SQL_ENGINE=django.db.backends.postgresql
+SQL_DATABASE=django_db
+SQL_USER=postgres
+SQL_PASSWORD= ------------
+SQL_HOST=postgres
+SQL_PORT=5432
+DATABASE=postgres
+
+PGADMIN_DEFAULT_EMAIL=postrges@yandex.ru
+PGADMIN_DEFAULT_PASSWORD= -----------
+PGADMIN_CONFIG_SERVER_MODE=False
+
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD= ------------
+POSTGRES_DB=django_db
