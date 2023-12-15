@@ -1,0 +1,49 @@
+version: '3.8'
+
+networks:
+  common_net:
+
+services:
+  web:
+    build: ./app
+    command: gunicorn hello_django.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    expose:
+      - 8000
+    env_file:
+      - ./.env
+    depends_on:
+      - postgres
+    networks:
+      - common_net
+    volumes:
+      - static_volume:/usr/src/app/staticfiles/
+  postgres:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d django_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - common_net
+  nginx:
+    build: ./app/nginx
+    restart: unless-stopped
+    ports:
+      - 1337:80
+    volumes:
+      - static_volume:/usr/src/app/staticfiles/
+    depends_on:
+      - web
+    networks:
+      - common_net
+
+volumes:
+  postgres_data:
+  static_volume:
