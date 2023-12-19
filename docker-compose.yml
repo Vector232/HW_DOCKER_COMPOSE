@@ -5,7 +5,9 @@ networks:
 
 services:
   web:
-    build: ./app
+    build: 
+      context: ./app
+      dockerfile: Dockerfile
     command: gunicorn hello_django.wsgi:application --bind 0.0.0.0:8000 --workers 3
     expose:
       - 8000
@@ -16,7 +18,7 @@ services:
     networks:
       - common_net
     volumes:
-      - static_volume:/staticfiles/
+      - static_volume:/usr/src/app/static/
   postgres:
     image: postgres:15
     volumes:
@@ -38,7 +40,7 @@ services:
     ports:
       - 1337:80
     volumes:
-      - static_volume:/staticfiles/
+      - static_volume:/usr/src/app/static/
     depends_on:
       - web
     networks:
@@ -47,3 +49,4 @@ services:
 volumes:
   postgres_data:
   static_volume:
+  media_volume:
